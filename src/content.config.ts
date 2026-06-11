@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 const blogCategories = ['fiction', 'engineering', 'philosophy', 'personal'] as const;
@@ -17,7 +18,7 @@ const projects = defineCollection({
     title: z.string(),
     description: z.string(),
     publishDate: z.coerce.date(),
-    repoUrl: z.string().url(),
+    repoUrl: z.url(),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false)
   })
