@@ -1,0 +1,23 @@
+---
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+
+const githubIcon = icon(faGithub, { classes: ['h-4', 'w-4'] }).html.join('');
+const linkedinIcon = icon(faLinkedin, { classes: ['h-4', 'w-4'] }).html.join('');
+---
+
+<footer class="border-t border-white/10 px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto flex max-w-5xl flex-col gap-3 text-sm text-slate-300 sm:flex-row sm:items-center sm:justify-between">
+    <p>Built with Astro, MDX, and Tailwind. Hosted on Azure Static Web Apps.</p>
+    <div class="flex items-center gap-2">
+      <a href="https://github.com" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-md border border-white/15 px-3 py-2 hover:bg-white/10">
+        <span set:html={githubIcon} />
+        GitHub
+      </a>
+      <a href="https://linkedin.com" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-md border border-white/15 px-3 py-2 hover:bg-white/10">
+        <span set:html={linkedinIcon} />
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</footer>

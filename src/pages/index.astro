@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import PostCard from '../components/PostCard.astro';
+
+const featuredProjects = (await getCollection('projects'))
+	.filter((project) => project.data.featured)
+	.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+	.slice(0, 2);
+
+const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
+	.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+	.slice(0, 2);
+---
+
+<BaseLayout title="Dan Qu | Home" description="Personal site with writing, projects, and resume.">
+	<section class="space-y-6">
+		<p class="inline-flex rounded-full border border-cyan-400/40 bg-cyan-400/10 px-3 py-1 text-xs uppercase tracking-wider text-cyan-100">
+			Personal hub
+		</p>
+		<h1 class="max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
+			Building thoughtful software, documenting experiments, and writing through ideas.
+		</h1>
+		<p class="max-w-2xl text-lg text-slate-300">
+			This site is split into personal writing, project deep-dives, and category-driven blog posts.
+			Start with the Personal menu for bio and resume, then explore Projects and Blog.
+		</p>
+	</section>
+
+	<section class="mt-12">
+		<div class="mb-4 flex items-center justify-between">
+			<h2 class="text-2xl font-semibold text-white">Featured Projects</h2>
+			<a href="/projects" class="text-sm text-cyan-200 hover:text-cyan-100">All projects</a>
+		</div>
+		<div class="grid gap-4 md:grid-cols-2">
+			{featuredProjects.map((project) => (
+				<ProjectCard
+					title={project.data.title}
+					description={project.data.description}
+					slug={project.id}
+					repoUrl={project.data.repoUrl}
+					tags={project.data.tags}
+				/>
+			))}
+		</div>
+	</section>
+
+	<section class="mt-12">
+		<div class="mb-4 flex items-center justify-between">
+			<h2 class="text-2xl font-semibold text-white">Recent Posts</h2>
+			<a href="/blog" class="text-sm text-cyan-200 hover:text-cyan-100">All posts</a>
+		</div>
+		<div class="grid gap-4 md:grid-cols-2">
+			{recentPosts.map((post) => (
+				<PostCard
+					title={post.data.title}
+					description={post.data.description}
+					slug={post.id}
+					pubDate={post.data.pubDate}
+					categories={post.data.categories}
+				/>
+			))}
+		</div>
+	</section>
+</BaseLayout>

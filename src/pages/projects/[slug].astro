@@ -1,0 +1,30 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CategoryBadge from '../../components/CategoryBadge.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project }
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={`${project.data.title} | Projects`} description={project.data.description}>
+  <article class="prose prose-invert max-w-none">
+    <h1>{project.data.title}</h1>
+    <p>{project.data.description}</p>
+    <p>
+      <a href={project.data.repoUrl} target="_blank" rel="noreferrer">Open repository</a>
+    </p>
+    <div class="mb-8 mt-3 flex flex-wrap gap-2 not-prose">
+      {project.data.tags.map((tag) => <CategoryBadge category={tag} />)}
+    </div>
+    <Content />
+  </article>
+</BaseLayout>

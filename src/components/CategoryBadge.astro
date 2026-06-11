@@ -1,0 +1,14 @@
+---
+interface Props {
+  category: string;
+}
+
+const { category } = Astro.props;
+---
+
+<a
+  href={`/blog/category/${category}`}
+  class="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-3 py-1 text-xs uppercase tracking-wide text-cyan-200 hover:bg-cyan-400/20"
+>
+  {category}
+</a>

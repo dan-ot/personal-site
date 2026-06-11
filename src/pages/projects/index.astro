@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+---
+
+<BaseLayout title="Projects | Dan Qu" description="Project write-ups tied to GitHub repositories.">
+  <section class="space-y-3">
+    <h1 class="text-3xl font-semibold text-white">Projects</h1>
+    <p class="max-w-2xl text-slate-300">
+      This section holds project notes focused on architecture, implementation details, tradeoffs, and repository context.
+    </p>
+  </section>
+
+  <section class="mt-8 grid gap-4 md:grid-cols-2">
+    {projects.map((project) => (
+      <ProjectCard
+        title={project.data.title}
+        description={project.data.description}
+        slug={project.id}
+        repoUrl={project.data.repoUrl}
+        tags={project.data.tags}
+      />
+    ))}
+  </section>
+</BaseLayout>

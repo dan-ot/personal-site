@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { BLOG_CATEGORIES } from '../../content.config';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+
+const counts = BLOG_CATEGORIES.map((category) => ({
+  category,
+  count: posts.filter((post) => post.data.categories.includes(category)).length
+}));
+---
+
+<BaseLayout title="Blog | Dan Qu" description="Posts across fiction, engineering, philosophy, and personal categories.">
+  <section class="space-y-4">
+    <h1 class="text-3xl font-semibold text-white">Blog</h1>
+    <p class="max-w-2xl text-slate-300">
+      Browse by category. Posts can appear in multiple categories and are listed in each relevant category roll.
+    </p>
+    <div class="flex flex-wrap gap-2">
+      {counts.map(({ category, count }) => (
+        <a href={`/blog/category/${category}`} class="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-3 py-1 text-xs uppercase tracking-wide text-cyan-200 hover:bg-cyan-400/20">
+          {category} ({count})
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-8 grid gap-4">
+    {posts.map((post) => (
+      <PostCard
+        title={post.data.title}
+        description={post.data.description}
+        slug={post.id}
+        pubDate={post.data.pubDate}
+        categories={post.data.categories}
+      />
+    ))}
+  </section>
+</BaseLayout>

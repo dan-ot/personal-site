@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { BLOG_CATEGORIES } from '../../../content.config';
+
+export async function getStaticPaths() {
+  return BLOG_CATEGORIES.map((category) => ({
+    params: { category }
+  }));
+}
+
+const { category } = Astro.params;
+
+if (!category || !BLOG_CATEGORIES.includes(category as (typeof BLOG_CATEGORIES)[number])) {
+  throw new Error(`Unknown blog category: ${category ?? 'undefined'}`);
+}
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .filter((post) => post.data.categories.includes(category))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+---
+
+<BaseLayout title={`${category} | Blog Category`} description={`Blog posts in the ${category} category.`}>
+  <section class="space-y-3">
+    <p class="text-xs uppercase tracking-wide text-cyan-200">Category</p>
+    <h1 class="text-3xl font-semibold capitalize text-white">{category}</h1>
+    <p class="text-slate-300">{posts.length} post(s)</p>
+  </section>
+
+  <section class="mt-8 grid gap-4">
+    {posts.map((post) => (
+      <PostCard
+        title={post.data.title}
+        description={post.data.description}
+        slug={post.id}
+        pubDate={post.data.pubDate}
+        categories={post.data.categories}
+      />
+    ))}
+  </section>
+</BaseLayout>

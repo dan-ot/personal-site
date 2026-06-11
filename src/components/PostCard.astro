@@ -1,0 +1,24 @@
+---
+import CategoryBadge from './CategoryBadge.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  slug: string;
+  pubDate: Date;
+  categories: string[];
+}
+
+const { title, description, slug, pubDate, categories } = Astro.props;
+---
+
+<article class="card-surface rounded-xl p-5">
+  <p class="text-xs uppercase tracking-wide text-slate-400">{pubDate.toLocaleDateString()}</p>
+  <h3 class="mt-2 text-xl font-semibold text-white">
+    <a href={`/blog/${slug}`} class="hover:text-cyan-200">{title}</a>
+  </h3>
+  <p class="mt-2 text-sm text-slate-300">{description}</p>
+  <div class="mt-4 flex flex-wrap gap-2">
+    {categories.map((category) => <CategoryBadge category={category} />)}
+  </div>
+</article>
