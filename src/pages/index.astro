@@ -17,11 +17,18 @@ const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
 <BaseLayout title="Home" description="Personal site with writing, projects, and resume.">
 	<section class="space-y-6">
 		<h1 class="max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
-			Building thoughtful software, documenting experiments, and writing through ideas.
+			Building at the intersection of value, maintainability, and operability
 		</h1>
 		<p class="max-w-2xl text-lg text-slate-300">
-			This site is split into personal writing, project deep-dives, and category-driven blog posts.
-			Start with the Personal menu for bio and resume, then explore Projects and Blog.
+			Problems appear unprompted, and they don't solve themselves - they must be attacked. Good engineering is understanding them, and using the most appropriate tools to solve them.
+		</p>
+		<p class="max-w-2xl text-lg text-slate-300">
+			Really good engineering is making the tools for other people to solve problems with.
+		</p>
+		<p class="max-w-2xl text-slate-300">
+			If you've arrived here wanting to know more about me, or you're a recruiter or I'm applying, check out the 'Personal' menu.
+			If you want to know what I've been up to, or want to see some of the ideas I discuss in practice, look at 'Projects'.
+			If you want to be bemused or offended by my personal writings, there's a 'Blog' menu item as well.
 		</p>
 	</section>
 

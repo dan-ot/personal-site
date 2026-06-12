@@ -6,6 +6,13 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+  markdown: {
+    syntaxHighlight: {
+      type: 'shiki',
+      excludeLangs: ['mermaid']
+    }
+  },
+
   integrations: [mdx()],
 
   vite: {
