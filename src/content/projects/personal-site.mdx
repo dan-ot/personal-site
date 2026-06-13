@@ -14,10 +14,21 @@ I need a place online to dump my thoughts and link my various projects. It just 
 
 ## Decisions
 
-Every personal project is a chance to learn a new tech I wouldn't get to explore at work. I'd prefer 
+Every personal project is a chance to learn a new tech I wouldn't get to explore at work. For this one, I'm back in the world of content-focused websites.
 
-```mermaid
-    flowchart LR
-        A@{ shape: circle, label: "Visitor" }
-        B@{ shape: rect, label: "Server" }
-```
+My usual fare is applications - projects that focus on behavior or process. For a personal site, though, the focus is on the content itself, not the process it represents. This division of 'behavior' vs 'content' isn't a hard one - sites can support both - but it's a key to understanding the nature of your current problem to know where you should land.
+
+The simplest kind of site is static - a collection of files which the web server hands to a browser as they're requested. The files are served from a root, and any references in the files are either absolute (including the host `www.example.com`) or relative to the current position or site. Static sites are great for content - the hosting is very cheap, since there are dedicated services for static files that don't touch compute (there is no calculation involved). There are, however, two main problems:
+
+  1) It's static. This is good for content that changes infrequently, but does not support 'live' content (such as a commerce site with a live inventory, or frequent sales or price changes).
+  2) It onerous to maintain. Because each visible page in the web browser is a separate file, there is a lot of duplication - which is a smell we should recognize. Duplicated code, when it has the same meaning (like the header on a site), multiplies our maintenance burden. A change in one place (like a `meta` tag for improved SEO) has to be made on all relevant pages.
+
+As the compute available to websites got cheaper, the shift went from static files to rendered output. This is how the most popular platform - Wordpress - operates. A visitor requests a page; Wordpress examines the request (mostly the URL/address, but probably also any attached cookies); then it routes the request through a series of scripts that generate the HTML which the browser will show. This nearly always involves a combination of resources - text templates, database queries, and compute spent rendering the two together. The inclusion of live data sources means the content can be different - updated or specialized - every time it is requested. This in turn has a few problems:
+
+  1) It's more expensive to host. The server has to do work to generate the page, and that work costs money. There are aggressive caching strategies available, but they eventually run up against the same problem.
+
+So what I'm looking for is the combination of the two - some way to easily maintain the overall layout of the site, combined with ease of drafting new pieces of content that fit well into the existing design.
+
+What I've arrived at is Astro. Like Wordpress or a rendered site, Astro composes its content from different parts - so if you want to change the header on all pages, there's only one or two files to edit. Unlike Wordpress, it does this at build time - that is, before the site is made available to a viewer. The output of a build is a totally static site, while the input is various components and distinct data.
+
+There are options to change that - to do server-side rendering on some requests. I think this can be useful in small parts, but if it becomes more common, you begin to lose the advantages Astro gives, and you might as well go to a more generated format.
